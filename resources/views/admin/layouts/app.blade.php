@@ -202,6 +202,87 @@
             font-size: 0.85rem;
             font-weight: 500;
         }
+
+        .sidebar-toggle {
+            border: 1px solid #2a2a2a;
+            background: #0f0f0f;
+            color: #fff;
+            border-radius: 8px;
+            width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-backdrop {
+            display: none;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.25s ease;
+                z-index: 1050;
+                width: min(82vw, 300px);
+            }
+
+            body.admin-sidebar-open .sidebar {
+                transform: translateX(0);
+            }
+
+            .sidebar-backdrop {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1040;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.2s ease;
+            }
+
+            body.admin-sidebar-open .sidebar-backdrop {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .top-bar {
+                padding: 0.75rem 1rem;
+            }
+
+            .top-bar h4 {
+                font-size: 1.05rem;
+            }
+
+            .top-user-name {
+                font-size: 0.85rem;
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .content-area {
+                padding: 1rem;
+            }
+
+            .form-card {
+                padding: 1rem;
+            }
+
+            .table-card {
+                overflow-x: auto;
+            }
+
+            .table-card .table {
+                min-width: 700px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -266,11 +347,18 @@
         </div>
     </aside>
 
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
     {{-- Main Content --}}
     <div class="main-content">
         <div class="top-bar">
-            <h4>@yield('page-title', 'Dashboard')</h4>
-            <span class="text-muted">{{ Auth::user()->name }}</span>
+            <div class="d-flex align-items-center gap-2">
+                <button type="button" class="sidebar-toggle d-lg-none" id="sidebarToggle" aria-label="Open menu">
+                    <i class="bi bi-list"></i>
+                </button>
+                <h4>@yield('page-title', 'Dashboard')</h4>
+            </div>
+            <span class="text-muted top-user-name">{{ Auth::user()->name }}</span>
         </div>
 
         {{-- Flash Messages --}}
@@ -289,6 +377,45 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function () {
+            const body = document.body;
+            const toggle = document.getElementById('sidebarToggle');
+            const backdrop = document.getElementById('sidebarBackdrop');
+
+            if (!toggle || !backdrop) {
+                return;
+            }
+
+            const closeSidebar = () => body.classList.remove('admin-sidebar-open');
+
+            toggle.addEventListener('click', function () {
+                body.classList.toggle('admin-sidebar-open');
+            });
+
+            backdrop.addEventListener('click', closeSidebar);
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    closeSidebar();
+                }
+            });
+
+            window.addEventListener('resize', function () {
+                if (window.innerWidth >= 992) {
+                    closeSidebar();
+                }
+            });
+
+            document.querySelectorAll('.sidebar .nav-link').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    if (window.innerWidth < 992) {
+                        closeSidebar();
+                    }
+                });
+            });
+        })();
+    </script>
     @yield('scripts')
 </body>
 </html>

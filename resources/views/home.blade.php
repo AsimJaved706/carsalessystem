@@ -328,8 +328,30 @@
                             <div class="col-md-6 col-xl-4">
                                 <div class="car-card">
                                     <div class="card-img-wrapper">
-                                        @if($vehicle->primaryImage)
-                                            <img src="{{ asset($vehicle->primaryImage->image_path) }}" alt="{{ $vehicle->full_title }}">
+                                        @php
+                                            $orderedImages = $vehicle->images->sortByDesc('is_primary')->values();
+                                            $carouselId = 'vehicleCarousel' . $vehicle->id;
+                                        @endphp
+                                        @if($orderedImages->isNotEmpty())
+                                            @if($orderedImages->count() > 1)
+                                                <div id="{{ $carouselId }}" class="carousel slide vehicle-carousel" data-bs-interval="false">
+                                                    <div class="carousel-inner">
+                                                        @foreach($orderedImages as $index => $image)
+                                                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                                                <img src="{{ asset($image->image_path) }}" alt="{{ $vehicle->full_title }} - Image {{ $index + 1 }}">
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                    <button class="carousel-control-prev" type="button" data-bs-target="#{{ $carouselId }}" data-bs-slide="prev" aria-label="Previous image">
+                                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    </button>
+                                                    <button class="carousel-control-next" type="button" data-bs-target="#{{ $carouselId }}" data-bs-slide="next" aria-label="Next image">
+                                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    </button>
+                                                </div>
+                                            @else
+                                                <img src="{{ asset($orderedImages->first()->image_path) }}" alt="{{ $vehicle->full_title }}">
+                                            @endif
                                         @else
                                             <div class="d-flex align-items-center justify-content-center h-100" style="background: #222;">
                                                 <i class="bi bi-car-front fs-1 text-muted"></i>
@@ -495,6 +517,56 @@
         border-radius: 20px;
         font-size: 0.75rem;
         font-weight: 500;
+    }
+
+    .vehicle-carousel,
+    .vehicle-carousel .carousel-inner,
+    .vehicle-carousel .carousel-item {
+        height: 100%;
+    }
+
+    .vehicle-carousel .carousel-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .vehicle-carousel .carousel-control-prev,
+    .vehicle-carousel .carousel-control-next {
+        width: 34px;
+        height: 34px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.55);
+        border-radius: 50%;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .vehicle-carousel .carousel-control-prev {
+        left: 10px;
+    }
+
+    .vehicle-carousel .carousel-control-next {
+        right: 10px;
+    }
+
+    .card-img-wrapper:hover .vehicle-carousel .carousel-control-prev,
+    .card-img-wrapper:hover .vehicle-carousel .carousel-control-next {
+        opacity: 1;
+    }
+
+    .vehicle-carousel .carousel-control-prev-icon,
+    .vehicle-carousel .carousel-control-next-icon {
+        width: 0.85rem;
+        height: 0.85rem;
+    }
+
+    @media (max-width: 991.98px) {
+        .vehicle-carousel .carousel-control-prev,
+        .vehicle-carousel .carousel-control-next {
+            opacity: 1;
+        }
     }
 </style>
 @endsection

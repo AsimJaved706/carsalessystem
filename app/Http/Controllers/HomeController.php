@@ -17,7 +17,7 @@ class HomeController extends Controller
         ]);
 
         $vehicles = Vehicle::available()
-            ->with('primaryImage')
+            ->with(['primaryImage', 'images'])
             ->filter($filters)
             ->latest()
             ->get();
