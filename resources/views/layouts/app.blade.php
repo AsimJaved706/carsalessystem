@@ -72,7 +72,7 @@
 
         /* ── Hero Banner ── */
         .hero-banner {
-            background: url('/images/hero-banner.png') center center / cover no-repeat;
+            background: url("{{ asset(\App\Models\Setting::get('site_banner', 'images/hero-banner.png')) }}") center center / cover no-repeat;
             padding: 5rem 0;
             position: relative;
             overflow: hidden;

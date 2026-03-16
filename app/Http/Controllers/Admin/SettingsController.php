@@ -103,6 +103,7 @@ class SettingsController extends Controller
             'social_facebook',
             'social_instagram',
             'site_logo',
+            'site_banner',
             'header_logo_height',
             'banner_logo_width',
         ]);
@@ -123,11 +124,13 @@ class SettingsController extends Controller
             'social_facebook' => 'nullable|url|max:255',
             'social_instagram' => 'nullable|url|max:255',
             'site_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'site_banner' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
             'header_logo_height' => 'nullable|integer|min:30|max:140',
             'banner_logo_width' => 'nullable|integer|min:120|max:700',
         ]);
 
         $logoPath = Setting::get('site_logo', 'images/logo.png');
+        $bannerPath = Setting::get('site_banner', 'images/hero-banner.png');
 
         if ($request->hasFile('site_logo')) {
             $uploadDir = public_path('images/settings');
@@ -141,6 +144,18 @@ class SettingsController extends Controller
             $logoPath = 'images/settings/' . $filename;
         }
 
+        if ($request->hasFile('site_banner')) {
+            $uploadDir = public_path('images/settings');
+            if (!File::isDirectory($uploadDir)) {
+                File::makeDirectory($uploadDir, 0755, true);
+            }
+
+            $file = $request->file('site_banner');
+            $filename = 'banner_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move($uploadDir, $filename);
+            $bannerPath = 'images/settings/' . $filename;
+        }
+
         Setting::setMany([
             'contact_phone' => $request->contact_phone,
             'contact_email' => $request->contact_email,
@@ -149,6 +164,7 @@ class SettingsController extends Controller
             'social_facebook' => $request->social_facebook ?? '',
             'social_instagram' => $request->social_instagram ?? '',
             'site_logo' => $logoPath,
+            'site_banner' => $bannerPath,
             'header_logo_height' => (string) ($request->header_logo_height ?? 55),
             'banner_logo_width' => (string) ($request->banner_logo_width ?? 380),
         ]);

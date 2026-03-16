@@ -82,9 +82,24 @@
                         </div>
 
                         <div class="col-12">
+                            <label for="site_banner" class="form-label fw-semibold">Homepage Banner Image</label>
+                            <input type="file" class="form-control @error('site_banner') is-invalid @enderror"
+                                   id="site_banner" name="site_banner" accept="image/*">
+                            <small class="text-muted">Recommended 1920x700 (or wider) image. Max 10MB.</small>
+                            @error('site_banner')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                        </div>
+
+                        <div class="col-12">
                             <div class="p-3 rounded-3" style="background: #0a0a0a; border: 1px solid #2a2a2a;">
                                 <small class="text-uppercase d-block mb-2" style="color: #666; font-size: 0.7rem; letter-spacing: 1px;">Current Logo</small>
                                 <img src="{{ asset($settings['site_logo'] ?? 'images/logo.png') }}" alt="Current Logo" style="max-height: 72px; width: auto;">
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="p-3 rounded-3" style="background: #0a0a0a; border: 1px solid #2a2a2a;">
+                                <small class="text-uppercase d-block mb-2" style="color: #666; font-size: 0.7rem; letter-spacing: 1px;">Current Banner</small>
+                                <img src="{{ asset($settings['site_banner'] ?? 'images/hero-banner.png') }}" alt="Current Banner" style="max-height: 110px; width: auto; max-width: 100%; border-radius: 8px;">
                             </div>
                         </div>
 
