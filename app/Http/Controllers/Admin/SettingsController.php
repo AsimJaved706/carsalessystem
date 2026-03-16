@@ -7,6 +7,7 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 
 class SettingsController extends Controller
 {
@@ -101,6 +102,9 @@ class SettingsController extends Controller
             'contact_hours',
             'social_facebook',
             'social_instagram',
+            'site_logo',
+            'header_logo_height',
+            'banner_logo_width',
         ]);
 
         return view('admin.settings.contact', compact('settings'));
@@ -118,7 +122,24 @@ class SettingsController extends Controller
             'contact_hours' => 'nullable|string|max:255',
             'social_facebook' => 'nullable|url|max:255',
             'social_instagram' => 'nullable|url|max:255',
+            'site_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'header_logo_height' => 'nullable|integer|min:30|max:140',
+            'banner_logo_width' => 'nullable|integer|min:120|max:700',
         ]);
+
+        $logoPath = Setting::get('site_logo', 'images/logo.png');
+
+        if ($request->hasFile('site_logo')) {
+            $uploadDir = public_path('images/settings');
+            if (!File::isDirectory($uploadDir)) {
+                File::makeDirectory($uploadDir, 0755, true);
+            }
+
+            $file = $request->file('site_logo');
+            $filename = 'logo_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move($uploadDir, $filename);
+            $logoPath = 'images/settings/' . $filename;
+        }
 
         Setting::setMany([
             'contact_phone' => $request->contact_phone,
@@ -127,6 +148,9 @@ class SettingsController extends Controller
             'contact_hours' => $request->contact_hours ?? '',
             'social_facebook' => $request->social_facebook ?? '',
             'social_instagram' => $request->social_instagram ?? '',
+            'site_logo' => $logoPath,
+            'header_logo_height' => (string) ($request->header_logo_height ?? 55),
+            'banner_logo_width' => (string) ($request->banner_logo_width ?? 380),
         ]);
 
         return redirect()->route('admin.settings.contact')

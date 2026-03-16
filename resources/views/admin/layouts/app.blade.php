@@ -209,7 +209,7 @@
     {{-- Sidebar --}}
     <aside class="sidebar">
         <div class="brand">
-            <img src="{{ asset('images/logo.png') }}" alt="Lake Auto Sales & Services">
+            <img src="{{ asset(\App\Models\Setting::get('site_logo', 'images/logo.png')) }}" alt="Lake Auto Sales & Services">
         </div>
 
         <div class="nav-section">

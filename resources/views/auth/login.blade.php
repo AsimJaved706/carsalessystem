@@ -148,7 +148,7 @@
 <body>
     <div class="login-card">
         <div class="login-brand">
-            <img src="{{ asset('images/logo.png') }}" alt="Lake Auto Sales & Services">
+            <img src="{{ asset(\App\Models\Setting::get('site_logo', 'images/logo.png')) }}" alt="Lake Auto Sales & Services">
             <p>Admin Panel Login</p>
         </div>
 

@@ -453,7 +453,7 @@
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="Lake Auto Sales & Services">
+                <img src="{{ asset(\App\Models\Setting::get('site_logo', 'images/logo.png')) }}" alt="Lake Auto Sales & Services" style="height: {{ (int) \App\Models\Setting::get('header_logo_height', 55) }}px; width: auto;">
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <i class="bi bi-list text-white fs-4"></i>
@@ -512,7 +512,7 @@
             <div class="row g-4">
                 <div class="col-lg-4">
                     <div class="footer-brand">
-                        <img src="{{ asset('images/logo.png') }}" alt="Lake Auto Sales & Services">
+                        <img src="{{ asset(\App\Models\Setting::get('site_logo', 'images/logo.png')) }}" alt="Lake Auto Sales & Services">
                     </div>
                     <p>Your trusted source for quality used cars at affordable prices. Every vehicle inspected and ready for the road.</p>
                 </div>

@@ -18,7 +18,7 @@
                 </h5>
                 <p class="text-muted mb-4">Update your contact details. This information will be displayed on your website and email notifications.</p>
 
-                <form action="{{ route('admin.settings.contact.update') }}" method="POST">
+                <form action="{{ route('admin.settings.contact.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -68,6 +68,43 @@
                         </div>
 
                         <div class="col-12"><hr class="my-2"></div>
+
+                        <div class="col-12">
+                            <h6 class="fw-bold mb-3"><i class="bi bi-image me-2"></i>Branding</h6>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="site_logo" class="form-label fw-semibold">Website Logo</label>
+                            <input type="file" class="form-control @error('site_logo') is-invalid @enderror"
+                                   id="site_logo" name="site_logo" accept="image/*">
+                            <small class="text-muted">Recommended PNG with transparent background. Max 5MB.</small>
+                            @error('site_logo')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                        </div>
+
+                        <div class="col-12">
+                            <div class="p-3 rounded-3" style="background: #0a0a0a; border: 1px solid #2a2a2a;">
+                                <small class="text-uppercase d-block mb-2" style="color: #666; font-size: 0.7rem; letter-spacing: 1px;">Current Logo</small>
+                                <img src="{{ asset($settings['site_logo'] ?? 'images/logo.png') }}" alt="Current Logo" style="max-height: 72px; width: auto;">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="header_logo_height" class="form-label fw-semibold">Header Logo Height (px)</label>
+                            <input type="number" class="form-control @error('header_logo_height') is-invalid @enderror"
+                                   id="header_logo_height" name="header_logo_height" min="30" max="140"
+                                   value="{{ $settings['header_logo_height'] ?? 55 }}">
+                            <small class="text-muted">Used in top navbar.</small>
+                            @error('header_logo_height')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="banner_logo_width" class="form-label fw-semibold">Banner Logo Width (px)</label>
+                            <input type="number" class="form-control @error('banner_logo_width') is-invalid @enderror"
+                                   id="banner_logo_width" name="banner_logo_width" min="120" max="700"
+                                   value="{{ $settings['banner_logo_width'] ?? 380 }}">
+                            <small class="text-muted">Used in homepage hero banner.</small>
+                            @error('banner_logo_width')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                        </div>
 
                         <div class="col-12">
                             <h6 class="fw-bold mb-3"><i class="bi bi-share me-2"></i>Social Media Links</h6>
