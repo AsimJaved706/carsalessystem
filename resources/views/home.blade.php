@@ -14,9 +14,6 @@
                         <i class="bi bi-grid-3x3-gap-fill me-2"></i>View Inventory
                     </a>
                 </div>
-                <div class="col-lg-5 text-center d-none d-lg-block">
-                    <img src="{{ asset(\App\Models\Setting::get('site_logo', 'images/logo.png')) }}" alt="Lake Auto Sales & Services" class="hero-logo animate-in animate-delay-1" style="max-width: {{ (int) \App\Models\Setting::get('banner_logo_width', 380) }}px; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));">
-                </div>
             </div>
         </div>
     </section>
