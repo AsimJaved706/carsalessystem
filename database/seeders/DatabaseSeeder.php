@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Admin',
             'email' => 'admin@lakeautos.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('XoUm!**X2c'),
         ]);
 
         // Create 12 vehicles
