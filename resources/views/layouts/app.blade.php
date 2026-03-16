@@ -226,16 +226,50 @@
             border-radius: 16px;
             overflow: hidden;
         }
+        .vehicle-gallery .main-image-wrap {
+            position: relative;
+        }
         .vehicle-gallery .main-image {
             width: 100%;
             aspect-ratio: 16/10;
             object-fit: cover;
             border-radius: 16px;
+            touch-action: pan-y;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        .vehicle-gallery .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            transition: all 0.2s ease;
+        }
+        .vehicle-gallery .gallery-nav:hover {
+            background: rgba(0, 0, 0, 0.75);
+            border-color: rgba(255, 255, 255, 0.45);
+        }
+        .vehicle-gallery .gallery-nav.prev {
+            left: 12px;
+        }
+        .vehicle-gallery .gallery-nav.next {
+            right: 12px;
         }
         .vehicle-gallery .thumbnails {
             display: flex;
             gap: 0.75rem;
             margin-top: 0.75rem;
+            overflow-x: auto;
+            padding-bottom: 0.15rem;
         }
         .vehicle-gallery .thumb {
             width: 100px;
@@ -251,6 +285,17 @@
         .vehicle-gallery .thumb.active {
             border-color: var(--accent);
             opacity: 1;
+        }
+        @media (max-width: 576px) {
+            .vehicle-gallery .gallery-nav {
+                width: 36px;
+                height: 36px;
+            }
+
+            .vehicle-gallery .thumb {
+                width: 84px;
+                height: 62px;
+            }
         }
         .detail-info {
             background: var(--surface-card);

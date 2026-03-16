@@ -18,18 +18,34 @@
             <div class="col-lg-7">
                 <div class="vehicle-gallery">
                     @if($vehicle->images->isNotEmpty())
-                        <img src="{{ asset($vehicle->images->first()->image_path) }}"
-                             alt="{{ $vehicle->full_title }}"
-                             class="main-image"
-                             id="mainImage">
+                        @php
+                            $orderedImages = $vehicle->images->sortByDesc('is_primary')->values();
+                        @endphp
 
-                        @if($vehicle->images->count() > 1)
+                        <div class="main-image-wrap">
+                            <img src="{{ asset($orderedImages->first()->image_path) }}"
+                                 alt="{{ $vehicle->full_title }}"
+                                 class="main-image"
+                                 id="mainImage">
+
+                            @if($orderedImages->count() > 1)
+                                <button type="button" class="gallery-nav prev" id="galleryPrev" aria-label="Previous image">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+                                <button type="button" class="gallery-nav next" id="galleryNext" aria-label="Next image">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+                            @endif
+                        </div>
+
+                        @if($orderedImages->count() > 1)
                         <div class="thumbnails">
-                            @foreach($vehicle->images as $index => $image)
+                            @foreach($orderedImages as $index => $image)
                             <img src="{{ asset($image->image_path) }}"
                                  alt="Photo {{ $index + 1 }}"
                                  class="thumb {{ $index === 0 ? 'active' : '' }}"
-                                 onclick="changeImage(this, '{{ asset($image->image_path) }}')">
+                                 data-index="{{ $index }}"
+                                 onclick="changeImageByIndex({{ $index }})">
                             @endforeach
                         </div>
                         @endif
@@ -150,10 +166,83 @@
 
 @section('scripts')
 <script>
-function changeImage(thumb, src) {
-    document.getElementById('mainImage').src = src;
-    document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-    thumb.classList.add('active');
-}
+    const galleryImages = @json($vehicle->images->sortByDesc('is_primary')->values()->pluck('image_path')->toArray());
+    let currentImageIndex = 0;
+
+    function updateGalleryImage(index) {
+        if (!galleryImages.length) {
+            return;
+        }
+
+        if (index < 0) {
+            index = galleryImages.length - 1;
+        }
+
+        if (index >= galleryImages.length) {
+            index = 0;
+        }
+
+        currentImageIndex = index;
+
+        const mainImage = document.getElementById('mainImage');
+        if (mainImage) {
+            mainImage.src = `{{ asset('') }}${galleryImages[currentImageIndex]}`;
+        }
+
+        document.querySelectorAll('.thumb').forEach((thumb, idx) => {
+            thumb.classList.toggle('active', idx === currentImageIndex);
+        });
+    }
+
+    function changeImageByIndex(index) {
+        updateGalleryImage(index);
+    }
+
+    function showPrevImage() {
+        updateGalleryImage(currentImageIndex - 1);
+    }
+
+    function showNextImage() {
+        updateGalleryImage(currentImageIndex + 1);
+    }
+
+    (function bindGalleryControls() {
+        const prevBtn = document.getElementById('galleryPrev');
+        const nextBtn = document.getElementById('galleryNext');
+        const mainImage = document.getElementById('mainImage');
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', showPrevImage);
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', showNextImage);
+        }
+
+        if (mainImage && galleryImages.length > 1) {
+            let startX = 0;
+            let endX = 0;
+
+            mainImage.addEventListener('touchstart', function (event) {
+                startX = event.changedTouches[0].clientX;
+            }, { passive: true });
+
+            mainImage.addEventListener('touchend', function (event) {
+                endX = event.changedTouches[0].clientX;
+                const delta = endX - startX;
+                const threshold = 40;
+
+                if (Math.abs(delta) < threshold) {
+                    return;
+                }
+
+                if (delta > 0) {
+                    showPrevImage();
+                } else {
+                    showNextImage();
+                }
+            }, { passive: true });
+        }
+    })();
 </script>
 @endsection
