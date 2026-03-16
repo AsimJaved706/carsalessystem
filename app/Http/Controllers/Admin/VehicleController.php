@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Vehicle;
 use App\Models\VehicleImage;
+use App\Models\VehicleOption;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -23,7 +24,9 @@ class VehicleController extends Controller
 
     public function create()
     {
-        return view('admin.vehicles.create');
+        $options = VehicleOption::getAllGrouped();
+        
+        return view('admin.vehicles.create', compact('options'));
     }
 
     public function store(Request $request)
@@ -37,6 +40,17 @@ class VehicleController extends Controller
             'vin' => 'nullable|string|max:17',
             'description' => 'nullable|string',
             'status' => 'required|in:available,sold',
+            'body_type' => 'nullable|string|max:50',
+            'condition' => 'nullable|string|in:new,used,certified',
+            'transmission' => 'nullable|string|max:50',
+            'fuel_type' => 'nullable|string|max:50',
+            'drivetrain' => 'nullable|string|max:50',
+            'exterior_color' => 'nullable|string|max:100',
+            'interior_color' => 'nullable|string|max:100',
+            'seating_capacity' => 'nullable|integer|min:1|max:15',
+            'engine' => 'nullable|string|max:100',
+            'features' => 'nullable|array',
+            'features.*' => 'string',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
@@ -69,8 +83,9 @@ class VehicleController extends Controller
     public function edit(Vehicle $vehicle)
     {
         $vehicle->load('images');
+        $options = VehicleOption::getAllGrouped();
 
-        return view('admin.vehicles.edit', compact('vehicle'));
+        return view('admin.vehicles.edit', compact('vehicle', 'options'));
     }
 
     public function update(Request $request, Vehicle $vehicle)
@@ -84,10 +99,28 @@ class VehicleController extends Controller
             'vin' => 'nullable|string|max:17',
             'description' => 'nullable|string',
             'status' => 'required|in:available,sold',
+            'body_type' => 'nullable|string|max:50',
+            'condition' => 'nullable|string|in:new,used,certified',
+            'transmission' => 'nullable|string|max:50',
+            'fuel_type' => 'nullable|string|max:50',
+            'drivetrain' => 'nullable|string|max:50',
+            'exterior_color' => 'nullable|string|max:100',
+            'interior_color' => 'nullable|string|max:100',
+            'seating_capacity' => 'nullable|integer|min:1|max:15',
+            'engine' => 'nullable|string|max:100',
+            'features' => 'nullable|array',
+            'features.*' => 'string',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'primary_image' => 'nullable|integer|exists:vehicle_images,id',
         ]);
 
         $vehicle->update($validated);
+
+        // Handle primary image selection
+        if ($request->has('primary_image')) {
+            $vehicle->images()->update(['is_primary' => false]);
+            $vehicle->images()->where('id', $request->primary_image)->update(['is_primary' => true]);
+        }
 
         // Handle new image uploads
         if ($request->hasFile('images')) {

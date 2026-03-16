@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inquiry;
 use App\Models\Vehicle;
+use App\Models\Setting;
 use App\Mail\InquiryReceived;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -23,9 +24,12 @@ class InquiryController extends Controller
         $inquiry = Inquiry::create($validated);
         $inquiry->load('vehicle');
 
-        // Send email notification
+        // Send email notification to notification email from settings
         try {
-            Mail::to('info@lakeautos.com')->send(new InquiryReceived($inquiry));
+            $notificationEmail = Setting::get('notification_email');
+            if ($notificationEmail) {
+                Mail::to($notificationEmail)->send(new InquiryReceived($inquiry));
+            }
         } catch (\Exception $e) {
             // Log but don't fail
             \Log::warning('Failed to send inquiry email: ' . $e->getMessage());

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $vehicle->full_title . ' - LakeAutos')
+@section('title', $vehicle->full_title . ' - Lake Auto Sales & Services')
 
 @section('content')
 <section class="py-5">

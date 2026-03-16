@@ -19,20 +19,20 @@
             </span>
         </div>
 
-        <div class="p-3 rounded-3 mb-4" style="background: #f8fafc;">
-            <small class="text-muted d-block mb-1">Vehicle</small>
-            <strong>{{ $inquiry->vehicle->full_title ?? 'N/A' }}</strong>
+        <div class="p-3 rounded-3 mb-4" style="background: #1a1a1a; border: 1px solid #2a2a2a;">
+            <small class="d-block mb-1" style="color: #888;">Vehicle</small>
+            <strong class="text-white">{{ $inquiry->vehicle->full_title ?? 'N/A' }}</strong>
             @if($inquiry->vehicle)
                 <span class="ms-2 text-primary">{{ $inquiry->vehicle->formatted_price }}</span>
             @endif
         </div>
 
         <div class="mb-4">
-            <small class="text-muted d-block mb-1">Message</small>
-            <p class="mb-0">{{ $inquiry->message }}</p>
+            <small class="d-block mb-1" style="color: #888;">Message</small>
+            <p class="mb-0 text-white">{{ $inquiry->message }}</p>
         </div>
 
-        <div class="text-muted" style="font-size: 0.85rem;">
+        <div style="font-size: 0.85rem; color: #aaa;">
             <i class="bi bi-clock me-1"></i> Received {{ $inquiry->created_at->format('M d, Y \a\t h:i A') }}
         </div>
 

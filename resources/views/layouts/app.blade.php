@@ -3,30 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LakeAutos - Quality Used Cars at Affordable Prices. Browse our inventory of pre-owned vehicles.">
-    <title>@yield('title', 'LakeAutos - Quality Used Cars')</title>
+    <meta name="description" content="Lake Auto Sales & Services - Quality Used Cars at Affordable Prices. 2746 Dekalb St, Lake Station IN 46505. Call 219-252-9183.">
+    <title>@yield('title', 'Lake Auto Sales & Services - Quality Used Cars')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #0f172a;
-            --primary-light: #1e293b;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --accent-glow: rgba(59, 130, 246, 0.3);
+            --primary: #0a0a0a;
+            --primary-light: #1a1a1a;
+            --accent: #ffffff;
+            --accent-hover: #ffffff;
+            --accent-glow: rgba(255, 255, 255, 0.2);
             --success: #10b981;
             --gold: #f59e0b;
-            --surface: #f8fafc;
-            --text: #0f172a;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
-            --card-shadow-hover: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+            --surface: #111111;
+            --surface-card: #1a1a1a;
+            --text: #ffffff;
+            --text-muted: #aaa;
+            --border: #2a2a2a;
+            --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -2px rgba(0,0,0,0.3);
+            --card-shadow-hover: 0 20px 25px -5px rgba(0,0,0,0.5), 0 8px 10px -6px rgba(0,0,0,0.4);
         }
 
         * { box-sizing: border-box; }
 
+        /* Override Bootstrap's text-muted for dark theme */
+        .text-muted {
+            color: #aaa !important;
+        }
         body {
             font-family: 'Inter', sans-serif;
             color: var(--text);
@@ -39,18 +44,18 @@
         /* ── Navbar ── */
         .navbar-custom {
             background: var(--primary);
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
             backdrop-filter: blur(20px);
         }
         .navbar-custom .navbar-brand {
-            font-weight: 800;
-            font-size: 1.5rem;
-            color: #fff;
-            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            padding: 0;
         }
-        .navbar-custom .navbar-brand span {
-            color: var(--accent);
+        .navbar-custom .navbar-brand img {
+            height: 55px;
+            width: auto;
         }
         .navbar-custom .nav-link {
             color: rgba(255,255,255,0.75);
@@ -67,7 +72,7 @@
 
         /* ── Hero Banner ── */
         .hero-banner {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            background: url('/images/hero-banner.png') center center / cover no-repeat;
             padding: 5rem 0;
             position: relative;
             overflow: hidden;
@@ -75,22 +80,12 @@
         .hero-banner::before {
             content: '';
             position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-            border-radius: 50%;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.85) 100%);
+            z-index: 0;
         }
         .hero-banner::after {
-            content: '';
-            position: absolute;
-            bottom: -30%;
-            left: -10%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, transparent 70%);
-            border-radius: 50%;
+            content: none;
         }
         .hero-banner h1 {
             font-size: 3.2rem;
@@ -98,6 +93,7 @@
             color: #fff;
             line-height: 1.1;
             letter-spacing: -1px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
         .hero-banner p {
             color: rgba(255,255,255,0.7);
@@ -105,31 +101,34 @@
             max-width: 500px;
         }
         .hero-banner .btn-hero {
-            background: var(--accent);
-            color: #fff;
+            background: #ffffff;
+            color: #0a0a0a;
             padding: 0.85rem 2.2rem;
             border-radius: 12px;
-            font-weight: 600;
+            font-weight: 700;
             border: none;
             font-size: 1rem;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px var(--accent-glow);
+            box-shadow: 0 4px 20px rgba(255,255,255,0.2);
         }
         .hero-banner .btn-hero:hover {
-            background: var(--accent-hover);
+            background: #e0e0e0;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px var(--accent-glow);
+            box-shadow: 0 8px 30px rgba(255,255,255,0.3);
+            color: #0a0a0a;
         }
 
-        /* ── Car Cards ── */
+        /* ── Section Titles ── */
         .section-title {
             font-weight: 800;
             font-size: 2rem;
             letter-spacing: -0.5px;
-            color: var(--text);
+            color: #fff;
         }
+
+        /* ── Car Cards ── */
         .car-card {
-            background: #fff;
+            background: var(--surface-card);
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid var(--border);
@@ -148,7 +147,7 @@
             aspect-ratio: 16 / 10;
             overflow: hidden;
             position: relative;
-            background: #e2e8f0;
+            background: #222;
         }
         .car-card .card-img-wrapper img {
             width: 100%;
@@ -185,7 +184,7 @@
             font-weight: 700;
             font-size: 1.1rem;
             margin-bottom: 0.5rem;
-            color: var(--text);
+            color: #fff;
         }
         .car-card .car-price {
             font-size: 1.4rem;
@@ -205,8 +204,8 @@
         }
         .car-card .btn-view {
             margin-top: auto;
-            background: var(--primary);
-            color: #fff;
+            background: #ffffff;
+            color: #0a0a0a;
             border: none;
             padding: 0.6rem 1.2rem;
             border-radius: 10px;
@@ -217,8 +216,8 @@
             text-decoration: none;
         }
         .car-card .btn-view:hover {
-            background: var(--accent);
-            color: #fff;
+            background: #e0e0e0;
+            color: #0a0a0a;
         }
 
         /* ── Vehicle Detail ── */
@@ -254,7 +253,7 @@
             opacity: 1;
         }
         .detail-info {
-            background: #fff;
+            background: var(--surface-card);
             border-radius: 16px;
             padding: 2rem;
             border: 1px solid var(--border);
@@ -264,6 +263,7 @@
             font-size: 1.8rem;
             font-weight: 800;
             margin-bottom: 0.5rem;
+            color: #fff;
         }
         .detail-info .vehicle-price {
             font-size: 2rem;
@@ -281,8 +281,9 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.75rem;
-            background: var(--surface);
+            background: var(--primary);
             border-radius: 10px;
+            border: 1px solid var(--border);
         }
         .detail-specs .spec-item i {
             font-size: 1.2rem;
@@ -294,11 +295,12 @@
         }
         .detail-specs .spec-value {
             font-weight: 600;
+            color: #fff;
         }
 
         /* ── Inquiry Form ── */
         .inquiry-card {
-            background: #fff;
+            background: var(--surface-card);
             border-radius: 16px;
             padding: 2rem;
             border: 1px solid var(--border);
@@ -307,33 +309,44 @@
         .inquiry-card h3 {
             font-weight: 700;
             margin-bottom: 1.5rem;
+            color: #fff;
         }
         .form-control, .form-select {
             border-radius: 10px;
             border: 1px solid var(--border);
             padding: 0.7rem 1rem;
             transition: all 0.2s;
+            background: var(--primary);
+            color: var(--text);
         }
         .form-control:focus, .form-select:focus {
             border-color: var(--accent);
             box-shadow: 0 0 0 3px var(--accent-glow);
+            background: var(--primary);
+            color: var(--text);
+        }
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+        .form-label {
+            color: var(--text);
         }
         .btn-submit {
-            background: var(--accent);
-            color: #fff;
+            background: #ffffff;
+            color: #0a0a0a;
             border: none;
             padding: 0.75rem 2rem;
             border-radius: 10px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 1rem;
             transition: all 0.3s;
             width: 100%;
         }
         .btn-submit:hover {
-            background: var(--accent-hover);
+            background: #e0e0e0;
             transform: translateY(-1px);
             box-shadow: 0 4px 15px var(--accent-glow);
-            color: #fff;
+            color: #0a0a0a;
         }
 
         /* ── Footer ── */
@@ -342,6 +355,7 @@
             color: rgba(255,255,255,0.7);
             padding: 3rem 0 1.5rem;
             margin-top: auto;
+            border-top: 1px solid var(--border);
         }
         .footer h5 {
             font-weight: 700;
@@ -356,16 +370,13 @@
         .footer a:hover {
             color: var(--accent);
         }
-        .footer .footer-brand {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #fff;
-        }
-        .footer .footer-brand span {
-            color: var(--accent);
+        .footer .footer-brand img {
+            height: 60px;
+            width: auto;
+            margin-bottom: 1rem;
         }
         .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid var(--border);
             padding-top: 1.5rem;
             margin-top: 2rem;
             font-size: 0.85rem;
@@ -373,7 +384,7 @@
 
         /* ── Contact Page ── */
         .contact-info-card {
-            background: #fff;
+            background: var(--surface-card);
             border-radius: 16px;
             padding: 2rem;
             border: 1px solid var(--border);
@@ -384,11 +395,15 @@
         .contact-info-card:hover {
             transform: translateY(-4px);
             box-shadow: var(--card-shadow-hover);
+            border-color: var(--accent);
         }
         .contact-info-card i {
             font-size: 2.5rem;
             color: var(--accent);
             margin-bottom: 1rem;
+        }
+        .contact-info-card h5 {
+            color: #fff;
         }
 
         /* ── Alert Styles ── */
@@ -409,6 +424,26 @@
         .animate-delay-1 { animation-delay: 0.1s; }
         .animate-delay-2 { animation-delay: 0.2s; }
         .animate-delay-3 { animation-delay: 0.3s; }
+
+        /* ── Stats Bar ── */
+        .stats-bar {
+            background: var(--surface-card);
+            border-bottom: 1px solid var(--border);
+        }
+        .stats-bar .stat-icon {
+            color: var(--accent);
+        }
+        .stats-bar .fw-bold {
+            color: #fff;
+        }
+
+        /* ── Breadcrumb ── */
+        .breadcrumb-item a {
+            color: var(--accent);
+        }
+        .breadcrumb-item.active {
+            color: var(--text-muted);
+        }
     </style>
     @yield('styles')
 </head>
@@ -418,7 +453,7 @@
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
-                <i class="bi bi-car-front-fill me-2"></i>Lake<span>Autos</span>
+                <img src="{{ asset('images/logo.png') }}" alt="Lake Auto Sales & Services">
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <i class="bi bi-list text-white fs-4"></i>
@@ -476,10 +511,10 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4">
-                    <div class="footer-brand mb-3">
-                        <i class="bi bi-car-front-fill me-2"></i>Lake<span>Autos</span>
+                    <div class="footer-brand">
+                        <img src="{{ asset('images/logo.png') }}" alt="Lake Auto Sales & Services">
                     </div>
-                    <p>Your trusted source for quality used cars at affordable prices. We offer a wide selection of pre-owned vehicles.</p>
+                    <p>Your trusted source for quality used cars at affordable prices. Every vehicle inspected and ready for the road.</p>
                 </div>
                 <div class="col-lg-4">
                     <h5>Quick Links</h5>
@@ -490,15 +525,20 @@
                 </div>
                 <div class="col-lg-4">
                     <h5>Contact Info</h5>
+                    @php
+                        $footerPhone = \App\Models\Setting::get('contact_phone', '219-252-9183');
+                        $footerEmail = \App\Models\Setting::get('contact_email', 'info@lakeautosales.com');
+                        $footerAddress = \App\Models\Setting::get('contact_address', '2746 Dekalb St, Lake Station IN 46505');
+                    @endphp
                     <ul class="list-unstyled">
-                        <li class="mb-2"><i class="bi bi-telephone me-2"></i> XXX-XXX-XXXX</li>
-                        <li class="mb-2"><i class="bi bi-envelope me-2"></i> info@lakeautos.com</li>
-                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> Your Address Here</li>
+                        <li class="mb-2"><i class="bi bi-telephone me-2"></i> {{ $footerPhone }}</li>
+                        <li class="mb-2"><i class="bi bi-envelope me-2"></i> {{ $footerEmail }}</li>
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> {{ $footerAddress }}</li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom text-center">
-                <p class="mb-0">&copy; {{ date('Y') }} LakeAutos. All rights reserved.</p>
+                <p class="mb-0">&copy; {{ date('Y') }} Lake Auto Sales & Services. All rights reserved.</p>
             </div>
         </div>
     </footer>

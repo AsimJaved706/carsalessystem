@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="d-flex align-items-center justify-content-between mb-4">
-        <p class="text-muted mb-0">{{ $vehicles->total() }} vehicles total</p>
+        <p class="mb-0" style="color: #aaa;">{{ $vehicles->total() }} vehicles total</p>
         <a href="{{ route('admin.vehicles.create') }}" class="btn btn-primary rounded-pill">
             <i class="bi bi-plus-lg me-1"></i> Add Vehicle
         </a>
@@ -33,15 +33,15 @@
                                     <img src="{{ asset($vehicle->primaryImage->image_path) }}"
                                          alt="" style="width: 60px; height: 40px; object-fit: cover; border-radius: 6px;">
                                 @else
-                                    <div style="width: 60px; height: 40px; background: #e2e8f0; border-radius: 6px;"
+                                    <div style="width: 60px; height: 40px; background: #2a2a2a; border-radius: 6px;"
                                          class="d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-car-front text-muted"></i>
+                                        <i class="bi bi-car-front" style="color: #666;"></i>
                                     </div>
                                 @endif
                                 <div>
-                                    <div class="fw-semibold">{{ $vehicle->make }} {{ $vehicle->model }}</div>
+                                    <div class="fw-semibold text-white">{{ $vehicle->make }} {{ $vehicle->model }}</div>
                                     @if($vehicle->vin)
-                                    <small class="text-muted">{{ $vehicle->vin }}</small>
+                                    <small style="color: #888;">{{ $vehicle->vin }}</small>
                                     @endif
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center text-muted py-4">No vehicles yet. Add your first vehicle!</td>
+                        <td colspan="7" class="text-center py-4" style="color: #888;">No vehicles yet. Add your first vehicle!</td>
                     </tr>
                     @endforelse
                 </tbody>
